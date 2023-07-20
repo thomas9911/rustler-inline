@@ -1,0 +1,3 @@
+<%= functions %>
+
+rustler::init!("<%= module %>", [<%= Enum.join(function_headers, ", ") %>]);
