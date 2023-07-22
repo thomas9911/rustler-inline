@@ -5,9 +5,13 @@ authors = []
 edition = "2021"
 
 [lib]
-name = "tmp"
+name = "<%= crate_name %>"
 path = "lib.rs"
 crate-type = ["cdylib"]
 
 [dependencies]
-rustler = "<%= rustler_version %>"
+<%= 
+    dependencies 
+    |> Enum.map(fn {dep, dep_spec} -> "#{dep} = #{dep_spec}" end) 
+    |> Enum.join("\n")
+%>

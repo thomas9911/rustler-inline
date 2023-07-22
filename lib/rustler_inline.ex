@@ -14,14 +14,14 @@ defmodule RustlerInline do
   end
 
   defmacro rust(code, _options \\ []) when is_binary(code) do
+    rustler_version =
+      case Application.spec(:rustler, :vsn) do
+        nil -> raise "rustler not found"
+        version -> version |> to_string() |> Version.parse!() |> Map.put(:patch, 0) |> to_string()
+      end
+
     Module.register_attribute(__CALLER__.module, :ruster_inline, accumulate: true)
     Module.put_attribute(__CALLER__.module, :ruster_inline, code)
-    Module.put_attribute(__CALLER__.module, :ruster_inline_rustler_version, "0.29.1")
-  end
-
-  defmacro sigil_i({:<<>>, _meta, [string]}, _options) when is_binary(string) do
-    Module.register_attribute(__CALLER__.module, :ruster_inline, accumulate: true)
-    Module.put_attribute(__CALLER__.module, :ruster_inline, string)
-    Module.put_attribute(__CALLER__.module, :ruster_inline_rustler_version, "0.29.1")
+    Module.put_attribute(__CALLER__.module, :ruster_inline_rustler_version, rustler_version)
   end
 end
