@@ -70,11 +70,15 @@ defmodule RustlerInline.Compiler do
 
   defmacro __before_compile__(env) do
     nif_prefix = "/// nif:"
-    crate_name = "tmp"
+    # crate_name = "tmp"
     out_module = env.module
+
+    crate_name =
+      out_module |> Module.split() |> Enum.join("") |> Macro.underscore() |> IO.inspect()
+
     app = Module.get_attribute(out_module, :ruster_inline_app)
     rust_deps = Module.get_attribute(out_module, :ruster_inline_rust_deps)
-    out_dir = out_dir(app)
+    out_dir = out_dir(crate_name)
 
     File.mkdir_p!(out_dir)
 

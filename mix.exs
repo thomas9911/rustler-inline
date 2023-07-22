@@ -24,6 +24,7 @@ defmodule RustlerInline.MixProject do
   defp deps do
     [
       {:rustler, "~> 0.29", only: :test},
+      {:jason, "~> 1.4", only: :test},
       {:styler, "~> 0.7", only: [:dev, :test], runtime: false}
     ]
   end

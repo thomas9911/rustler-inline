@@ -1,5 +1,5 @@
 [package]
-name = "tmp"
+name = "<%= crate_name %>"
 version = "0.1.0"
 authors = []
 edition = "2021"
