@@ -1,4 +1,5 @@
 defmodule RustlerInline.Compiler do
+  @moduledoc false
   defp get_rust_code(out_module) do
     case Module.get_attribute(out_module, :ruster_inline) do
       [] -> raise "No rust specified"
@@ -72,7 +73,7 @@ defmodule RustlerInline.Compiler do
     crate_name = "tmp"
     out_module = env.module
     app = Module.get_attribute(out_module, :ruster_inline_app)
-    rustler_version = Module.get_attribute(out_module, :ruster_inline_rustler_version)
+    rust_deps = Module.get_attribute(out_module, :ruster_inline_rust_deps)
     out_dir = out_dir(app)
 
     File.mkdir_p!(out_dir)
@@ -99,7 +100,7 @@ defmodule RustlerInline.Compiler do
     cargo_toml =
       priv_dir()
       |> Path.join("Cargo.toml.eex")
-      |> EEx.eval_file(dependencies: [rustler: "\"#{rustler_version}\""], crate_name: crate_name)
+      |> EEx.eval_file(dependencies: rust_deps, crate_name: crate_name)
 
     lib_rs =
       priv_dir()
