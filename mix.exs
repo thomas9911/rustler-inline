@@ -8,7 +8,8 @@ defmodule RustlerInline.MixProject do
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      elixirc_paths: elixirc_paths(Mix.env())
+      elixirc_paths: elixirc_paths(Mix.env()),
+      aliases: aliases()
     ]
   end
 
@@ -27,5 +28,18 @@ defmodule RustlerInline.MixProject do
       {:jason, "~> 1.4", only: :test},
       {:styler, "~> 0.7", only: [:dev, :test], runtime: false}
     ]
+  end
+
+  defp aliases do
+    [generate_readme: &generate_readme/1]
+  end
+
+  defp generate_readme(_) do
+    simple_example = File.read!("test/support/simple.ex")
+    deps_example = File.read!("test/rustler_inline/extra_deps_test.exs")
+
+    "README.eex"
+    |> EEx.eval_file(simple_example: simple_example, deps_example: deps_example)
+    |> then(&File.write("README.md", &1))
   end
 end

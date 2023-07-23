@@ -1,5 +1,12 @@
 defmodule RustlerInlineTest.Simple do
-  @moduledoc false
+  @moduledoc """
+  This will create elixir stubs and then links them to the rust nifs.any()
+  
+  The functions can then be called like normal Elixir functions:
+  - add_one/1
+  - sum_two/2
+  - to_string_with_env/1
+  """
   use RustlerInline, app: :rustler_inline
 
   rust """
